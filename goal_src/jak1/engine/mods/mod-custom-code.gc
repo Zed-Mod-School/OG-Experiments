@@ -24,6 +24,27 @@
     (defun runs-every-frame ()
       ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in mod-common-functions.gc
       
+      ;;(the yakow (process-by-ename "yakow-8"))
+
+
+    ;;make jak invisible
+    (when (the yakow (process-by-ename "yakow-8")) 
+     (vector-copy! (-> (the yakow (process-by-ename "yakow-8")) root trans) (-> *target* root trans))
+     (vector-copy! (-> (the yakow (process-by-ename "yakow-8")) root rot) (-> *target* root rot))
+
+    )
+     
+    ;;make yakow move to where jak is
+
+(if  (and (not (= (-> *target* draw status) (the-as draw-status 2))) )
+
+(begin
+(set! (-> *target* draw status) (draw-status hidden))
+)
+)
+
+
+
       (if *show-input-display* 
         (input-display-on)
         (input-display-off)
