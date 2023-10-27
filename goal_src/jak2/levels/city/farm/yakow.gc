@@ -62,72 +62,9 @@
     :notice-distance-delta (meters 10)
     :default-hit-points 5
     :gnd-collide-with (collide-spec backgnd)
-    :overlaps-others-collide-with-filter (collide-spec jak bot player-list)
+    :overlaps-others-collide-with-filter (collide-spec backgnd)
     :penetrate-knocked (penetrate
-      touch
-      generic-attack
-      lunge
-      flop
-      punch
-      spin
-      roll
-      uppercut
-      bonk
-      tube
-      vehicle
-      flut-attack
-      board
       mech
-      mech-punch
-      mech-bonk
-      dark-skin
-      dark-punch
-      dark-bomb
-      dark-giant
-      shield
-      explode
-      jak-yellow-shot
-      jak-red-shot
-      jak-blue-shot
-      jak-dark-shot
-      enemy-yellow-shot
-      enemy-dark-shot
-      eco-yellow
-      eco-red
-      eco-blue
-      eco-green
-      knocked
-      penetrate-33
-      penetrate-34
-      penetrate-35
-      penetrate-36
-      penetrate-37
-      penetrate-38
-      penetrate-39
-      penetrate-40
-      penetrate-41
-      penetrate-42
-      penetrate-43
-      penetrate-44
-      penetrate-45
-      penetrate-46
-      penetrate-47
-      penetrate-48
-      penetrate-49
-      penetrate-50
-      penetrate-51
-      penetrate-52
-      penetrate-53
-      penetrate-54
-      penetrate-55
-      penetrate-56
-      penetrate-57
-      penetrate-58
-      penetrate-59
-      penetrate-60
-      penetrate-61
-      penetrate-62
-      penetrate-63
       )
     :movement-gravity (meters -100)
     :friction 0.8
@@ -135,7 +72,7 @@
     :attack-shove-up (meters 2)
     :attack-mode 'generic
     :attack-damage 2
-    :recover-gnd-collide-with (collide-spec backgnd crate obstacle hit-by-others-list pusher)
+    :recover-gnd-collide-with (collide-spec backgnd)
     :jump-height-min (meters 3)
     :jump-height-factor 0.5
     :knocked-seek-ry-clamp 2730.6667
@@ -417,34 +354,21 @@
 
 (defmethod init-enemy-collision! yakow ((this yakow))
   "Initializes the [[collide-shape-moving]] and any ancillary tasks to make the enemy collide properly"
-  (let ((s5-0 (new 'process 'collide-shape-moving this (collide-list-enum usually-hit-by-player))))
+  (let ((s5-0 (new 'process 'collide-shape-moving this (collide-list-enum hit-by-others))))
     (set! (-> s5-0 dynam) (copy *standard-dynamics* 'process))
     (set! (-> s5-0 reaction) cshape-reaction-default)
     (set! (-> s5-0 no-reaction)
           (the-as (function collide-shape-moving collide-query vector vector object) nothing)
           )
     (set! (-> s5-0 penetrated-by) (penetrate
-                                    generic-attack
-                                    lunge
-                                    flop
-                                    punch
-                                    spin
                                     roll
-                                    uppercut
-                                    bonk
-                                    tube
-                                    vehicle
-                                    flut-attack
-                                    board
-                                    mech-punch
-                                    dark-punch
-                                    dark-giant
+                              
                                     )
           )
     (let ((v1-7 (new 'process 'collide-shape-prim-sphere s5-0 (the-as uint 0))))
-      (set! (-> v1-7 prim-core collide-as) (collide-spec enemy))
-      (set! (-> v1-7 prim-core collide-with) (collide-spec backgnd jak player-list))
-      (set! (-> v1-7 prim-core action) (collide-action solid no-standon))
+      (set! (-> v1-7 prim-core collide-as) (collide-spec backgnd))
+      (set! (-> v1-7 prim-core collide-with) (collide-spec backgnd))
+      (set! (-> v1-7 prim-core action) (collide-action semi-solid))
       (set-vector! (-> v1-7 local-sphere) 0.0 4096.0 0.0 10240.0)
       (set! (-> s5-0 total-prims) (the-as uint 1))
       (set! (-> s5-0 root-prim) v1-7)

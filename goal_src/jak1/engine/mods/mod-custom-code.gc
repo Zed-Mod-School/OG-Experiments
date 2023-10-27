@@ -24,6 +24,23 @@
     (defun runs-every-frame ()
       ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in mod-common-functions.gc
       
+      ;;ctyfarmb-start-b
+
+      (if (process-by-ename "yakow-19")
+      (Begin
+      (set! (-> ( the-as yakow (process-by-ename "yakow-19")) root trans)  (-> *target* root trans) )
+      (set! (-> ( the-as yakow (process-by-ename "yakow-19")) root rot)  (-> *target* root rot) )
+      (logior! (-> *target* draw status) (draw-control-status no-draw-bounds2)) (edited)
+
+      
+
+      
+      
+      )
+      
+      )
+
+
       (if *show-input-display* 
         (input-display-on)
         (input-display-off)

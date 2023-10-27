@@ -735,7 +735,7 @@ yakow-default-event-handler
 
 (defmethod init-from-entity! yakow ((this yakow) (arg0 entity-actor))
   (stack-size-set! (-> this main-thread) 512)
-  (let ((s4-0 (new 'process 'collide-shape-moving this (collide-list-enum hit-by-player))))
+  (let ((s4-0 (new 'process 'collide-shape-moving this (collide-list-enum hit-by-others))))
     (set! (-> s4-0 dynam) (copy *standard-dynamics* 'process))
     (set! (-> s4-0 reaction) default-collision-reaction)
     (set! (-> s4-0 no-reaction)
