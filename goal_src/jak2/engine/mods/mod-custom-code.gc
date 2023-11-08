@@ -21,6 +21,8 @@
     ;; Begin function defintions.
     ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+
     (defun runs-every-frame ()
       ;; (increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in mod-common-functions.gc
 
@@ -31,6 +33,29 @@
       ;;     (draw-normal *target*)
       ;;     )
       ;;   )
+ (clear *temp-string*)
+    (clear *pc-encoded-temp-string*)
+    (format *temp-string* "
+    ~%<COLOR_BLUE>  Made by Zed
+    <COLOR_WHITE>~%Damage taken when you fall ~F
+    ~%You have fallen ~F
+"
+    (/ (-> *TARGET-bank* fall-far) (meters 1))
+
+    (/ (vector-dot (-> *target* control dynam gravity-normal)   (vector-! (new 'stack-no-clear 'vector) (-> *target* control last-trans-any-surf) (-> *target* control trans))) (meters 1))
+
+    )
+    (pc-encode-utf8-string *temp-string* *pc-encoded-temp-string*)
+    (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf1))
+      ;; reset bucket settings prior to drawing - font won't do this for us, and
+      ;; draw-raw-image can sometimes mess them up. (intro sequence)
+      (dma-buffer-add-gs-set-flusha buf (alpha-1 (new 'static 'gs-alpha :b #x1 :d #x1)) (tex1-1 (new 'static 'gs-tex1 :mmag #x1 :mmin #x1)))
+      (let ((font-ctx (new 'stack 'font-context *font-default-matrix* 245 75 0.0 (font-color default) (font-flags middle shadow kerning large))))
+        (set! (-> font-ctx scale) 0.325)
+        (draw-string-adv *pc-encoded-temp-string* buf font-ctx)))
+
+
+
 
       (if *show-input-display* 
         (input-display-on)

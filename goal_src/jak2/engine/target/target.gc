@@ -1741,13 +1741,10 @@
        )
       (else
         (let ((f0-2
-                (vector-dot
-                  (-> self control dynam gravity-normal)
-                  (vector-! (new 'stack-no-clear 'vector) (-> self control last-trans-any-surf) (-> self control trans))
-                  )
+                (vector-dot (-> *target* control dynam gravity-normal)   (vector-! (new 'stack-no-clear 'vector) (-> *target* control last-trans-any-surf) (-> *target* control trans)))
                 )
               )
-          (if (and (< (-> *TARGET-bank* fall-far) f0-2) (not (logtest? (-> self control status) (collide-status on-water))))
+          (if (and (< (-> *TARGET-bank* fall-far) f0-2) (not (logtest? (-> *target* control status) (collide-status on-water))))
               (go target-hit-ground-hard f0-2)
               )
           )

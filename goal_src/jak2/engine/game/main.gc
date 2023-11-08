@@ -863,8 +863,10 @@
     (if (-> *level* loading-level)
         (load-continue (-> *level* loading-level))
         )
-    (runs-every-frame)
-
+   (when *target* (runs-every-frame))
+ (when *target*
+  (if (not (vector= (-> *target* control last-trans-any-surf) (-> *target* control trans) )) 
+  (add-debug-sphere #t (bucket-id debug2) (-> *target* control last-trans-any-surf) (meters 0.5) *color-green*) ))
     ; ;; Run blerc to modify foreground models
     (with-profiler 'merc *profile-merc-color*
       (blerc-execute)
